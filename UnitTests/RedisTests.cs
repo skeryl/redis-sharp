@@ -11,7 +11,7 @@ namespace UnitTests
 
         public RedisTests()
         {
-            _hostname = "54.80.244.197";
+            _hostname = "localhost";
             _port = 6379;
         }
 
