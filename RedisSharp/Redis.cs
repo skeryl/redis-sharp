@@ -316,6 +316,9 @@ namespace RedisSharp
                 Connect();
             if (_socket == null)
                 return false;
+
+            WrapInQuotesIfNeccessary(args);
+            
             byte[] bytes = Encoding.UTF8.GetBytes(args == null || args.Length <= 0 ? cmd : string.Format(cmd, args));
             try
             {
@@ -330,6 +333,20 @@ namespace RedisSharp
                 return false;
             }
             return true;
+        }
+
+        private void WrapInQuotesIfNeccessary(object[] args)
+        {
+            for (int i = 0; i < args.Length; i++)
+            {
+                var o = args[i];
+                if (o is string)
+                {
+                    var str = (string)o;
+                    if (str.Contains(' '))
+                        args[i] = String.Format("\"{0}\"", str);
+                }
+            }
         }
 
         [Conditional("DEBUG")]
@@ -464,17 +481,19 @@ namespace RedisSharp
                     {
                         int num = _bstream.Read(buffer, offset, result1 - offset);
                         if (num < 1)
-                            throw new ResponseException("Invalid termination mid stream");
+                            throw new ResponseException("Invalid termination mid stream.");
                         offset += num;
                     } while (offset < result1);
-                    if (_bstream.ReadByte() != 13 || _bstream.ReadByte() != 10)
-                        throw new ResponseException("Invalid termination");
+                    if (_bstream.ReadByte() != '\r' || _bstream.ReadByte() != '\n')
+                        throw new ResponseException("Invalid termination.");
                     return buffer;
                 case '*':
                     int result2;
                     if (int.TryParse(str.Substring(1), out result2))
                         return result2 <= 0 ? new byte[0] : ReadData();
-                    throw new ResponseException("Unexpected length parameter" + str);
+                        throw new ResponseException("Unexpected length parameter" + str);
+                case '+':
+                    return Bytes(str.Substring(1));
                 default:
                     throw new ResponseException("Unexpected reply: " + str);
             }

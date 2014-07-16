@@ -91,6 +91,7 @@ namespace UnitTests
             if (!Encoding.UTF8.GetString(values[0]).Equals("another value"))
                 Console.WriteLine("error: Range did not return the right values");
 
+
             Assert(client.AddToSet("FOO", Encoding.UTF8.GetBytes("BAR")), "Problem adding to set");
             Assert(client.AddToSet("FOO", Encoding.UTF8.GetBytes("BAZ")), "Problem adding to set");
             Assert(client.AddToSet("FOO", "Hoge"), "Problem adding string to set");
