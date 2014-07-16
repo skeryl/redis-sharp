@@ -199,23 +199,30 @@ namespace UnitTests
         [TestMethod]
         public void ListTests()
         {
-            using (var client = new Redis(_hostname, _port))
+            using (var client = new Redis(_hostname, _port, true))
             {
-                client.RightPush("alist", "avalue");
-                client.RightPush("alist", "another value");
-                Assert.IsTrue(client.ListLength("alist") == 2, "List length should have been 2");
+                const string listKey = "alist";
+                client.Remove(listKey);
 
-                var value = Encoding.UTF8.GetString(client.ListIndex("alist", 1));
+                client.RightPush(listKey, "avalue");
+                client.RightPush(listKey, "another value");
+                Assert.IsTrue(client.ListLength(listKey) == 2, "List length should have been 2");
+
+                var value = Encoding.UTF8.GetString(client.ListIndex(listKey, 1));
                 Assert.AreEqual(value, "another value");
 
-                value = Encoding.UTF8.GetString(client.LeftPop("alist"));
+                value = Encoding.UTF8.GetString(client.LeftPop(listKey));
                 Assert.AreEqual(value, "avalue");
 
-                Assert.IsTrue(client.ListLength("alist") == 1, "List should have one element after pop.");
+                Assert.IsTrue(client.ListLength(listKey) == 1, "List should have one element after pop.");
 
-                client.RightPush("alist", "yet another value");
+                client.RightPush(listKey, "yet another value");
 
-                byte[][] values = client.ListRange("alist", 0, 2);
+                value = "a value \"from\" the left! (with embedded quotes)";
+                client.LeftPush(listKey, value);
+                Assert.AreEqual(Encoding.UTF8.GetString(client.LeftPop(listKey)), value);
+
+                byte[][] values = client.ListRange(listKey, 0, 2);
                 Assert.AreEqual(Encoding.UTF8.GetString(values[0]), "another value");
             }
         }

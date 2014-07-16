@@ -342,9 +342,14 @@ namespace RedisSharp
                 var o = args[i];
                 if (o is string)
                 {
-                    var str = (string)o;
-                    if (str.Contains(' '))
-                        args[i] = String.Format("\"{0}\"", str);
+                    var str = (string) o;
+                    if (str.Contains(' ') || str.Contains("\""))
+                    {
+                        bool startsWithQuote = str.First() == '"';
+                        bool endsWithQuote = str.Last() == '"';
+                        str = String.Format("\"{0}\"", (startsWithQuote && endsWithQuote ? str.Substring(1, str.Length - 1) : str).Replace("\"", "\\\""));
+                    }
+                    args[i] = str;
                 }
             }
         }
@@ -686,8 +691,11 @@ namespace RedisSharp
             if (!disposing || _socket == null)
                 return;
             SendCommand("QUIT\r\n");
-            _socket.Close();
-            _socket = null;
+            if (_socket != null)
+            {
+                _socket.Close();
+                _socket = null;
+            }
         }
 
         public byte[][] ListRange(string key, int start, int end)
@@ -697,7 +705,7 @@ namespace RedisSharp
 
         public void LeftPush(string key, string value)
         {
-            SendExpectSuccess("LPUSH {0} {1}\r\n{2}\r\n", key, value.Length, value);
+            SendExpectSuccess("LPUSH {0} {1}\r\n", key, value);
         }
 
         public void RightPush(string key, string value)
