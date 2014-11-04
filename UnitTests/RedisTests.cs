@@ -43,7 +43,7 @@ namespace UnitTests
         [TestMethod]
         public void SetTests()
         {
-            using (var client = new Redis(_hostname, _port))
+            using (var client = new Redis(_hostname, _port, true))
             {
                 client.FlushDb();
 
@@ -187,10 +187,10 @@ namespace UnitTests
                 Assert.IsTrue(client.GetKeys("f*").Length >= 1, "There should be at least one key that starts with 'f'.");
 
                 client.Set("bar", "foo");
-                Assert.IsTrue(client.GetKeys("foo", "bar").Length == 2, "2 keys should have been retrieved.");
+                Assert.IsTrue(client.MGet("foo", "bar").Length == 2, "2 keys should have been retrieved.");
 
                 client.Remove("unknown");
-                var keys = client.GetKeys("foo", "bar", "unknown");
+                var keys = client.MGet("foo", "bar", "unknown");
                 Assert.IsTrue(keys.Length == 3, "3 keys should have been retrieved.");
                 Assert.IsNull(keys[2]);
             }

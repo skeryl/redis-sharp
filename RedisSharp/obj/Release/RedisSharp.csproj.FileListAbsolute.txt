@@ -1,0 +1,4 @@
+C:\Users\sdc\Documents\GitHub\redis-sharp\RedisSharp\bin\Release\RedisSharp.dll
+C:\Users\sdc\Documents\GitHub\redis-sharp\RedisSharp\bin\Release\RedisSharp.pdb
+C:\Users\sdc\Documents\GitHub\redis-sharp\RedisSharp\obj\Release\RedisSharp.dll
+C:\Users\sdc\Documents\GitHub\redis-sharp\RedisSharp\obj\Release\RedisSharp.pdb

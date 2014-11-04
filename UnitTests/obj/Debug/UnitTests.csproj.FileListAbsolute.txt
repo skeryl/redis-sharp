@@ -1,0 +1,7 @@
+C:\Users\sdc\Documents\GitHub\redis-sharp\UnitTests\bin\Debug\UnitTests.dll
+C:\Users\sdc\Documents\GitHub\redis-sharp\UnitTests\bin\Debug\UnitTests.pdb
+C:\Users\sdc\Documents\GitHub\redis-sharp\UnitTests\bin\Debug\RedisSharp.dll
+C:\Users\sdc\Documents\GitHub\redis-sharp\UnitTests\bin\Debug\RedisSharp.pdb
+C:\Users\sdc\Documents\GitHub\redis-sharp\UnitTests\obj\Debug\UnitTests.csprojResolveAssemblyReference.cache
+C:\Users\sdc\Documents\GitHub\redis-sharp\UnitTests\obj\Debug\UnitTests.dll
+C:\Users\sdc\Documents\GitHub\redis-sharp\UnitTests\obj\Debug\UnitTests.pdb

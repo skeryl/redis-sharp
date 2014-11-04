@@ -25,7 +25,7 @@ namespace UnitTests
                 Console.WriteLine("error: type is not string");
             client.Set("bar", "foo");
 
-            var arr = client.GetKeys("foo", "bar");
+            var arr = client.MGet("foo", "bar");
             if (arr.Length != 2)
                 Console.WriteLine("error, expected 2 values");
             if (arr[0].Length != 3)

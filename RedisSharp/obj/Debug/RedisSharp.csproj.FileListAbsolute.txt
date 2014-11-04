@@ -1,0 +1,5 @@
+C:\Users\sdc\Documents\GitHub\redis-sharp\RedisSharp\bin\Debug\RedisSharp.dll
+C:\Users\sdc\Documents\GitHub\redis-sharp\RedisSharp\bin\Debug\RedisSharp.pdb
+C:\Users\sdc\Documents\GitHub\redis-sharp\RedisSharp\obj\Debug\RedisSharp.dll
+C:\Users\sdc\Documents\GitHub\redis-sharp\RedisSharp\obj\Debug\RedisSharp.pdb
+C:\Users\sdc\Documents\GitHub\redis-sharp\RedisSharp\obj\Debug\RedisSharp.csprojResolveAssemblyReference.cache

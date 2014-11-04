@@ -12,7 +12,6 @@ namespace RedisSharp
     public class Redis : IDisposable
     {
         private const long UnixEpoch = 621355968000000000L;
-        private const char CharSpace = ' ';
         private readonly byte[] _endData = new[] {(byte) '\r', (byte) '\n'};
         private BufferedStream _bstream;
         private int _db;
@@ -340,9 +339,9 @@ namespace RedisSharp
             for (int i = 0; i < args.Length; i++)
             {
                 var o = args[i];
-                if (o is string)
+                var str = o as string;
+                if (str != null)
                 {
-                    var str = (string) o;
                     if (str.Contains(' ') || str.Contains("\""))
                     {
                         bool startsWithQuote = str.First() == '"';
@@ -651,13 +650,14 @@ namespace RedisSharp
         {
             if (pattern == null)
                 throw new ArgumentNullException("pattern");
-            byte[] bytes = SendExpectData(null, "KEYS", pattern);
-            if (bytes.Length == 0)
-                return new string[0];
-            return Encoding.UTF8.GetString(bytes).Split(new[] { CharSpace });
+            byte[][] reply = SendDataCommandExpectMultiBulkReply(null, "KEYS", pattern);
+            var keys = new string[reply.Length];
+            for (int i = 0; i < reply.Length; i++)
+                keys[i] = Encoding.UTF8.GetString(reply[i]);
+            return keys;
         }
 
-        public byte[][] GetKeys(params string[] keys)
+        public byte[][] MGet(params string[] keys)
         {
             if (keys == null)
                 throw new ArgumentNullException("keys");
